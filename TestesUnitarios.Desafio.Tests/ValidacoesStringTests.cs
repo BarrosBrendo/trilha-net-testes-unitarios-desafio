@@ -1,63 +1,46 @@
 using TestesUnitarios.Desafio.Console.Services;
-using Xunit;
 
 namespace TestesUnitarios.Desafio.Tests
 {
     public class ValidacoesStringTests
     {
-        private ValidacoesString _validacoes = new ValidacoesString();
+        private readonly ValidacoesString _validacoes = new ValidacoesString();
 
         [Fact]
-        public void DeveRetornar6QuantidadeCaracteresDaPalavraMatrix()
+        public void DeveRetornarQuantidadeCorretaDeCaracteresNaPalavraMatrix()
         {
             // Arrange
-            var texto = "Matrix";
-            var resultadoEsperado = 6;
+            const string palavraMatrix = "Matrix";
+            const int resultadoEsperado = 6;
 
             // Act
-            var resultado = _validacoes.RetornarQuantidadeCaracteres(texto);
+            var resultado = _validacoes.RetornarQuantidadeCaracteres(palavraMatrix);
+
+            // Assert
+            Assert.Equal(resultadoEsperado, resultado);
+        }
+
+        [Theory]
+        [InlineData("Esse é um texto qualquer", "qualquer", true)]
+        [InlineData("Esse é um texto qualquer", "teste", false)]
+        public void DeveVerificarSeTextoContemPalavra(string texto, string palavraProcurada, bool resultadoEsperado)
+        {
+            // Act
+            var resultado = _validacoes.ContemCaractere(texto, palavraProcurada);
 
             // Assert
             Assert.Equal(resultadoEsperado, resultado);
         }
 
         [Fact]
-        public void DeveContemAPalavraQualquerNoTexto()
+        public void DeveVerificarSeTextoTerminaComPalavraProcurada()
         {
             // Arrange
-            var texto = "Esse é um texto qualquer";
-            var textoProcurado = "qualquer";
+            const string texto = "Começo, meio e fim do texto procurado";
+            const string palavraProcurada = "procurado";
 
             // Act
-            var resultado = _validacoes.ContemCaractere(texto, textoProcurado);
-
-            // Assert
-            Assert.True(resultado);
-        }
-
-        [Fact]
-        public void NaoDeveConterAPalavraTesteNoTexto()
-        {
-            // Arrange
-            var texto = "Esse é um texto qualquer";
-            var textoProcurado = "teste";
-
-            // Act
-            var resultado = _validacoes.ContemCaractere(texto, textoProcurado);
-
-            // Assert
-            Assert.False(resultado);
-        }
-
-        [Fact]
-        public void TextoDeveTerminarComAPalavraProcurada()
-        {
-            // Arrange
-            var texto = "Começo, meio e fim do texto procurado";
-            var textoProcurado = "procurado";
-
-            // Act
-            var resultado = _validacoes.TextoTerminaCom(texto, textoProcurado);
+            var resultado = _validacoes.TextoTerminaCom(texto, palavraProcurada);
 
             // Assert
             Assert.True(resultado);
